@@ -1,0 +1,157 @@
+load GMM_clusters.csv
+c_data = GMM_clusters(:,1);
+x_data = GMM_clusters(:,2);
+y_data = GMM_clusters(:,3);
+
+figure
+gscatter(x_data,y_data,c_data,'br','xx');
+title('Clustered data by Flink Gaussian Mixture Model');
+
+mu1 = [0.07220554958155337 0.016679282028917088 ];
+sigma1 = [4.7793454543079035 1.8760366257585837; 1.8760366257585837 0.9145966731003882 ];
+mu2 = [-0.10447328667040846 0.04286682436478046 ];
+sigma2 = [4.907459749879301 -2.0069730721176464; -2.0069730721176464 1.0115187518964153 ];
+
+
+
+% GAUSSIAN 1
+x1 = -8:.2:8; y1 = -4:.2:4;
+%x1 = -4:.2:16; x2 = -2:.2:10;
+[X1,Y1] = meshgrid(x1,y1);
+F1 = mvnpdf([X1(:) Y1(:)],mu1,sigma1);
+F1 = reshape(F1,length(y1),length(x1));
+
+% GAUSSIAN 2
+x2 = -8:.2:8; y2 = -4:.2:4;
+%x1b = -4:.2:16; x2b = -2:.2:10;
+[X2,Y2] = meshgrid(x2,y2);
+F2 = mvnpdf([X2(:) Y2(:)],mu2,sigma2);
+F2 = reshape(F2,length(y2),length(x2));
+
+% CONTOUR PLOT
+figure %first gaussian
+plot(x_data,y_data,'xk');
+title('Result of GMM in FLink');
+hold on;
+mvncdf([0 0],[1 1],mu1,sigma1);
+v1=[.0001 .001 .01 .05:.1:.95 .99 .999 .9999];
+[c1a,h1a]=contour(x1,y1,F1,v1);
+set(h1a,'color','b');
+xlabel('x'); ylabel('y');
+hold on;
+mvncdf([0 0],[1 1],mu2,sigma2);
+v2=[.0001 .001 .01 .05:.1:.95 .99 .999 .9999];
+[c2a,h2a] = contour(x2,y2,F2,v2);
+set(h2a,'color','r');
+
+
+
+
+% load data_100000_4.csv
+% %elem_data = data_100000_4(:,1);
+% x_data = data_100000_4(:,1);
+% y_data = data_100000_4(:,2);
+% figure
+% plot(x_data,y_data,'k.');
+
+%% RESULTS OF K-MEANS
+
+mu2 = [-1.8268347312842979 0.07729276416395259 ];
+sigma2 = [1.8401428530593078 -0.09011814971438477; -0.09011814971438477 1.0455004805846004 ];
+mu1 = [1.6756340033664308 -0.013815293374099832];
+sigma1 = [1.7464389110574807 -0.03622646150924061; -0.03622646150924061 0.8875583859826393];
+
+
+% GAUSSIAN 1
+x1 = -8:.2:8; y1 = -4:.2:4;
+%x1 = -4:.2:16; x2 = -2:.2:10;
+[X1,Y1] = meshgrid(x1,y1);
+F1 = mvnpdf([X1(:) Y1(:)],mu1,sigma1);
+F1 = reshape(F1,length(y1),length(x1));
+
+% GAUSSIAN 2
+x2 = -8:.2:8; y2 = -4:.2:4;
+%x1b = -4:.2:16; x2b = -2:.2:10;
+[X2,Y2] = meshgrid(x2,y2);
+F2 = mvnpdf([X2(:) Y2(:)],mu2,sigma2);
+F2 = reshape(F2,length(y2),length(x2));
+
+% CONTOUR PLOT
+figure %first gaussian
+plot(x_data,y_data,'xk');
+title('Result of K-Means in FLink');
+hold on;
+mvncdf([0 0],[1 1],mu1,sigma1);
+v1=[.0001 .001 .01 .05:.1:.95 .99 .999 .9999];
+[c1a,h1a]=contour(x1,y1,F1,v1);
+set(h1a,'color','b');
+xlabel('x'); ylabel('y');
+hold on;
+mvncdf([0 0],[1 1],mu2,sigma2);
+v2=[.0001 .001 .01 .05:.1:.95 .99 .999 .9999];
+[c2a,h2a] = contour(x2,y2,F2,v2);
+set(h2a,'color','r');
+
+
+load Kmeans_results.csv
+c_data = Kmeans_results(:,1);
+x_data = Kmeans_results(:,2);
+y_data = Kmeans_results(:,3);
+
+figure
+gscatter(x_data,y_data,c_data,'br','xx');
+title('Clustered data by Flink K-Means');
+
+%% RESULT OF GMM IN SPARK
+
+mu1=[0.07227571342136417,0.016699462119251357];
+sigma1=[4.785824174923345   1.8794096110029515; 1.8794096110029515  0.9157825725967962];
+mu2=[-0.10424531883476021,0.0428048363738866];
+sigma2=[4.901302153289788    -2.0036604365709123; -2.0036604365709123  1.0102667644182879];
+
+
+x1 = -8:.2:8; y1 = -4:.2:4;
+%x1 = -4:.2:16; x2 = -2:.2:10;
+[X1,Y1] = meshgrid(x1,y1);
+F1 = mvnpdf([X1(:) Y1(:)],mu1,sigma1);
+F1 = reshape(F1,length(y1),length(x1));
+
+% GAUSSIAN 2
+x2 = -8:.2:8; y2 = -4:.2:4;
+%x1b = -4:.2:16; x2b = -2:.2:10;
+[X2,Y2] = meshgrid(x2,y2);
+F2 = mvnpdf([X2(:) Y2(:)],mu2,sigma2);
+F2 = reshape(F2,length(y2),length(x2));
+
+% CONTOUR PLOT
+figure %first gaussian
+plot(x_data,y_data,'xk');
+title('Result of GMM in Spark');
+hold on;
+mvncdf([0 0],[1 1],mu1,sigma1);
+v1=[.0001 .001 .01 .05:.1:.95 .99 .999 .9999];
+[c1a,h1a]=contour(x1,y1,F1,v1);
+set(h1a,'color','m');
+xlabel('x'); ylabel('y');
+hold on;
+mvncdf([0 0],[1 1],mu2,sigma2);
+v2=[.0001 .001 .01 .05:.1:.95 .99 .999 .9999];
+[c2a,h2a] = contour(x2,y2,F2,v2);
+set(h2a,'color','g');
+
+
+load GMM_results_Spark.csv
+c_data = GMM_results_Spark(:,1);
+x_data = GMM_results_Spark(:,2);
+y_data = GMM_results_Spark(:,3);
+
+figure
+gscatter(x_data,y_data,c_data,'gm','xx');
+title('Clustered data by Spark Gaussian Mixture Model');
+
+
+load data_100.csv;
+x_data = data_100(:,1);
+y_data = data_100(:,2);
+figure
+plot(x_data,y_data,'xk');
